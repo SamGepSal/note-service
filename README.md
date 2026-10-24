@@ -29,7 +29,7 @@
 Команды ниже предназначены для macOS и Linux.
 
 ```bash
-git clone https://github.com/SamGepSal/notes-service.git
+git clone https://github.com/SamGepSal/note-service.git
 cd notes-service
 python3 -m venv .venv
 source .venv/bin/activate
