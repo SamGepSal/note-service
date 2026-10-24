@@ -1,11 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import os
 
 class NoteCreate(BaseModel):
     title: str
     text: str
 
-app = FastAPI(title="Сервис заметок")
+app_name = os.getenv("APP_NAME", "Сервис заметок")
+app = FastAPI(title=app_name)
 notes = [
     {
         "id": 1, 
