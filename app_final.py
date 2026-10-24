@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 app = FastAPI(title="Сервис заметок")
 notes = [
@@ -26,3 +26,9 @@ def version():
 def get_notes():
     return notes
 
+@app.get("/notes/{note_id}")
+def get_note(note_id: int):
+    for note in notes:
+        if note["id"] == note_id:
+            return note
+    raise HTTPException(status_code=404, detail="Заметка не найдена")
