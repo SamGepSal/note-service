@@ -1,0 +1,47 @@
+name: Notes Service CI
+on: 
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs: 
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dowload code
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with: 
+          python-version: "3.14"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install -r requirements-dev.txt
+
+      - name: Run tests
+        run: python -m pytest -v
+  
+  package: 
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Dowload code
+        uses: actions/checkout@v7
+
+      - name: Upload application artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: notes-service 
+          path: |
+            app_final.py
+            requirements.txt
+            README.md
+          if-no-files-found: error
+          retention-days: 30
