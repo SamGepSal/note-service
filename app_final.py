@@ -1,6 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import os
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s | %(name)s | %(message)s",
+)
+
+logger = logging.getLogger(__name__)
 
 class NoteCreate(BaseModel):
     title: str
@@ -38,6 +46,7 @@ def get_note(note_id: int):
     for note in notes:
         if note["id"] == note_id:
             return note
+    logger.warning("Заметка с id=%s не найдена", note_id)
     raise HTTPException(status_code=404, detail="Заметка не найдена")
 
 @app.post("/notes", status_code=201)
@@ -54,4 +63,5 @@ def create_note(note: NoteCreate):
     }
 
     notes.append(new_note)
+    logger.info("Создана заметка с id=%s", new_id)
     return new_note
